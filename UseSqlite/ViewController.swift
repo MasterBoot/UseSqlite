@@ -19,18 +19,30 @@ class ViewController: UIViewController {
         db.execute("create table if not exists format_tab(uid integer primary key,PKcount varchar(20),Redtiem varchar(20),Bluetime varchar(20))")
         //如果有数据则加载
         //initUser()
+        ViewFormartSet();
     }
-    
+    func ViewFormartSet()
+    {
+        
+        let data = db.query("select * from format_tab")
+            if data.count > 0 {
+                //获取最后一行数据显示
+                let user = data[data.count - 1]
+                matchCount.text=user["PKcount"] as? String
+                redT.text = user["Redtiem"] as? String
+                BlueT.text = user["Bluetime"] as? String
+        }
+    }
     @IBAction func formart(sender: UIButton) {
         let Count = matchCount.text!;
-        let red = redT.text;
+        let red = redT.text!;
         let Blue=BlueT.text!;
         //插入数据库，这里用到了esc字符编码函数，其实是调用bridge.m实现的
         let sql = "insert into format_tab(PKcount,Redtiem,Bluetime) values('\(Count)','\(red)','\(Blue)')"
         //print("sql: \(sql)")
         //通过封装的方法执行sql
         db.execute(sql)
-        //print(result)
+        print(sql);
     }
     //点击保存
     @IBAction func saveClicked(sender: AnyObject) {
