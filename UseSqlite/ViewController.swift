@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         //获取数据库实例
         db = SQLiteDB.sharedInstance()
         //如果表还不存在则创建表（其中uid为自增主键）
-        db.execute("create table if not exists format_tab(uid integer primary key,PKcount varchar(20),Redtiem varchar(20),Bluetime varchar(20))")
+        db.execute("create table if not exists Match_tab(uid integer primary key,PKcount varchar(20),Redtiem varchar(20),Bluetime varchar(20),matchCount varchar(10))")
         //如果有数据则加载
         //initUser()
         ViewFormartSet();
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     func ViewFormartSet()
     {
         
-        let data = db.query("select * from format_tab")
+        let data = db.query("select * from Match_tab")
             if data.count > 0 {
                 //获取最后一行数据显示
                 let user = data[data.count - 1]
@@ -33,18 +33,18 @@ class ViewController: UIViewController {
                 BlueT.text = user["Bluetime"] as? String
         }
     }
-    @IBAction func formart(sender: UIButton) {
+    //创建比赛
+    @IBAction func newMatch(sender: UIButton) {
         let Count = matchCount.text!;
         let red = redT.text!;
         let Blue=BlueT.text!;
         //插入数据库，这里用到了esc字符编码函数，其实是调用bridge.m实现的
-        let sql = "insert into format_tab(PKcount,Redtiem,Bluetime) values('\(Count)','\(red)','\(Blue)')"
+        let sql = "insert into Match_tab(PKcount,Redtiem,Bluetime,matchCount) values('\(Count)','\(red)','\(Blue)','1')"
         //print("sql: \(sql)")
         //通过封装的方法执行sql
         db.execute(sql)
-        print(sql);
     }
-    //点击保存
+    
     @IBAction func saveClicked(sender: AnyObject) {
         saveUser()
     }
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         let red = redT.text;
         let Blue=BlueT.text!;
         //插入数据库，这里用到了esc字符编码函数，其实是调用bridge.m实现的
-        let sql = "insert into format_tab(PKcount,Redtiem,Bluetime) values('\(Count)','\(red)','\(Blue)')"
+        let sql = "insert into Match_tab(PKcount,Redtiem,Bluetime) values('\(Count)','\(red)','\(Blue)')"
         //print("sql: \(sql)")
         //通过封装的方法执行sql
         db.execute(sql)
@@ -77,10 +77,10 @@ class ViewController: UIViewController {
         let mobile = self.txtMobile.text!
         //插入数据库，这里用到了esc字符编码函数，其实是调用bridge.m实现的
         let sql = "insert into format_tab(uname,mobile) values('\(uname)','\(mobile)')"
-        print("sql: \(sql)")
+        //print("sql: \(sql)")
         //通过封装的方法执行sql
         let result = db.execute(sql)
-        print(result)
+        //print(result)
     }
     
     override func didReceiveMemoryWarning() {
