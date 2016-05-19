@@ -79,7 +79,7 @@ class ViewController: UIViewController {
         let sql = "insert into format_tab(uname,mobile) values('\(uname)','\(mobile)')"
         //print("sql: \(sql)")
         //通过封装的方法执行sql
-        let result = db.execute(sql)
+        db.execute(sql)
         //print(result)
     }
     

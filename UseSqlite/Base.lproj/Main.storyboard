@@ -293,6 +293,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <animations/>
                                 <state key="normal" title="结束"/>
+                                <connections>
+                                    <action selector="ExitApp:" destination="DWT-lM-ge8" eventType="touchUpInside" id="cR9-kM-fvo"/>
+                                    <segue destination="BYZ-38-t0r" kind="modal" id="d2o-HY-HLw"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="队名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="K5n-yT-W34">
                                 <rect key="frame" x="45" y="135" width="34" height="21"/>
@@ -347,6 +351,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <animations/>
                                 <state key="normal" title="清空"/>
+                                <connections>
+                                    <action selector="MatchClear:" destination="DWT-lM-ge8" eventType="touchUpInside" id="pmr-Zf-fju"/>
+                                </connections>
                             </button>
                         </subviews>
                         <animations/>
@@ -371,5 +378,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="fuL-xy-ifV"/>
+        <segue reference="u3k-E1-2LU"/>
     </inferredMetricsTieBreakers>
 </document>

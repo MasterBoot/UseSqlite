@@ -19,6 +19,7 @@ class startPK: UIViewController {
     @IBOutlet weak var blueAllMatch: UILabel!
     @IBOutlet weak var blueNowMatch: UILabel!
     @IBOutlet weak var matchStyle: UILabel!
+    var Flag:Bool=true;
     override func viewDidLoad() {
         super.viewDidLoad()
         db = SQLiteDB.sharedInstance()
@@ -29,14 +30,15 @@ class startPK: UIViewController {
     }
     func UpdataLastFlag()
     {
-        db.execute("update t_matchFlag set redAll='\(redAllMatch.text!)',redNow='\(redNowMatch.text!)',blueAll='\(blueAllMatch.text!)',blueNow='\(blueNowMatch.text!)' where uid in(select uid from t_matchFlag order by uid desc)");
+        db.execute("update t_matchFlag set redAll='\(Matchnow.text!)' where uid in(select uid from t_matchFlag order by uid desc)");
     }
     func instoFlag()
     {
         let sql = "insert into t_matchFlag(redAll,redNow,blueAll,blueNow) values('\(redAllMatch.text!)','\(redNowMatch.text!)','\(blueAllMatch.text!)','\(blueNowMatch.text!)')"
-        //print("sql: \(sql)")
+        //let sql2 =""
         //通过封装的方法执行sql
         db.execute(sql)
+        db.execute("update Match_tab set matchCount='\(Matchnow.text!)' where uid in(select uid from Match_tab order by uid desc)")
     }
     func initUser() {
         let data = db.query("select * from Match_tab")
@@ -58,27 +60,91 @@ class startPK: UIViewController {
 
     }
     @IBAction func redAdd(sender: UIButton) {
-        if(Int(redNowMatch.text!)!+1>=11&&(Int(redNowMatch.text!)!+1)-(Int(blueNowMatch.text!))!>=2)
+        if(Flag)
         {
-            Matchnow.text=String(1+Int(Matchnow.text!)!)
-            redNowMatch.text="0";
-            blueNowMatch.text="0";
-            redAllMatch.text=String(1+Int(redAllMatch.text!)!)
-            matchStyle.text="当局完成!";
+            if(Int(redNowMatch.text!)!+1>=11&&(Int(redNowMatch.text!)!+1)-(Int(blueNowMatch.text!))!>=2)
+            {
+                if(Int(redAllMatch.text!)!+1>=(Int(Matchall.text!)!+1)/2)
+                {
+                    redAllMatch.text=String(1+Int(redAllMatch.text!)!);
+                    redNowMatch.text="0";
+                    matchStyle.text="红队胜利！";
+                    Flag=false;
+                }
+                else
+                {
+                    Matchnow.text=String(1+Int(Matchnow.text!)!);
+                    blueAllMatch.text=String(1+Int(blueAllMatch.text!)!);
+                    redNowMatch.text="0";
+                    blueNowMatch.text="0";
+                    matchStyle.text="当局完成!";
+                }
+            }
+            else
+            {
+                redNowMatch.text=String(1+Int(redNowMatch.text!)!)
+                matchStyle.text="正在比赛......";
+            }
         }
-        redNowMatch.text=String(1+Int(redNowMatch.text!)!)
+        
+        
     }
     @IBAction func redJian(sender: UIButton) {
-        redNowMatch.text=String(Int(redNowMatch.text!)!-1)
+        if(Int(redNowMatch.text!)!-1>=0)
+        {
+            redNowMatch.text=String(Int(redNowMatch.text!)!-1)
+        }
+
     }
     @IBAction func blueAdd(sender: UIButton) {
-        blueNowMatch.text=String(1+Int(blueNowMatch.text!)!)
+        if(Flag)
+        {
+            if(Int(blueNowMatch.text!)!+1>=11&&(Int(blueNowMatch.text!)!+1)-(Int(redNowMatch.text!))!>=2)
+            {
+                if(Int(blueAllMatch.text!)!+1>=(Int(Matchall.text!)!+1)/2)
+                {
+                    blueAllMatch.text=String(1+Int(blueAllMatch.text!)!);
+                    blueNowMatch.text="0";
+                    matchStyle.text="蓝队胜利！";
+                    Flag=false;
+                }
+                else
+                {
+                    Matchnow.text=String(1+Int(Matchnow.text!)!);
+                    blueAllMatch.text=String(1+Int(blueAllMatch.text!)!);
+                    redNowMatch.text="0";
+                    blueNowMatch.text="0";
+                    matchStyle.text="当局完成!";
+                }
+                
+            }
+            else
+            {
+                blueNowMatch.text=String(1+Int(blueNowMatch.text!)!)
+                matchStyle.text="正在比赛......";
+            }
+
+        }
     }
     @IBAction func blueJian(sender: UIButton) {
-        blueNowMatch.text=String(Int(blueNowMatch.text!)!-1)
+        if((Int(blueNowMatch.text!)!-1)>=0)
+        {
+            blueNowMatch.text=String(Int(blueNowMatch.text!)!-1)
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    @IBAction func MatchClear(sender: UIButton) {
+        redAllMatch.text="0"
+        redNowMatch.text="0"
+        blueAllMatch.text="0"
+        blueNowMatch.text="0"
+        //matchStyle.text="0"
+        Matchnow.text="1";
+    }
+    @IBAction func ExitApp(sender: UIButton) {
+        
     }
     @IBAction func SaveAndReturn(sender: UIButton) {
         //UpdataLastFlag();
