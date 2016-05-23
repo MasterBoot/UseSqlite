@@ -74,7 +74,7 @@ class startPK: UIViewController {
                 else
                 {
                     Matchnow.text=String(1+Int(Matchnow.text!)!);
-                    blueAllMatch.text=String(1+Int(blueAllMatch.text!)!);
+                    redAllMatch.text=String(1+Int(redAllMatch.text!)!);
                     redNowMatch.text="0";
                     blueNowMatch.text="0";
                     matchStyle.text="当局完成!";
